@@ -15,14 +15,14 @@ public class ImagePanel extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
     private Image image;
-    private ImageProcessor imageProcesser;
+    private ImageProcessor imageProcessor;
     
     
     public void setImage(String filePath) {
         // read image file
     	
-    	imageProcesser = new ImageProcessor(filePath);
-    	this.image = imageProcesser.getImage();
+    	imageProcessor = new ImageProcessor(filePath);
+    	this.image = imageProcessor.getBufferedImage();
     }
     
     public void resetImage(Image newImage){
@@ -31,7 +31,25 @@ public class ImagePanel extends JPanel {
     }
     
     
-    public void paintComponent(Graphics g) {
+    public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	
+
+	public ImageProcessor getImageProcessor() {
+		return imageProcessor;
+	}
+
+	public void setImageProcessor(ImageProcessor imageProcessor) {
+		this.imageProcessor = imageProcessor;
+	}
+
+	public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (image == null)
             return;

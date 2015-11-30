@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import business.ImageProcessor;
+
 public class MenuService {
 	
 	
@@ -36,6 +38,16 @@ public class MenuService {
 		}
 	}
 	
+	public void toGreyscale(MainFrame frame){
+		ImagePanel pane = frame.getPanel();
+		ImageProcessor imgP = pane.getImageProcessor();
+		imgP.imageGreyscale();
+		pane.setImage(imgP.getBufferedImage());
+		pane.repaint();
+		
+		
+	}
+	
 	public static MenuService getInstance(){
 		if(service == null){
 			service = new MenuService();
@@ -51,6 +63,11 @@ public class MenuService {
 		
 		if(cmd.equals("Exit")){
 			System.exit(0);
+		}
+		
+		if(cmd.equals("Greyscale")){
+			//System.out.println("cmd Greyscale");
+			toGreyscale(frame);
 		}
 	}
 }

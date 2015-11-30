@@ -1,5 +1,6 @@
 package business;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -7,13 +8,11 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
 
 
 public class ImageProcessor {
 	
 	
-	private Image image;
 	private BufferedImage bufferedImage;
 	private int imageWidth;
 	private int imageHeight;
@@ -21,13 +20,7 @@ public class ImageProcessor {
 	private LinkedList<BufferedImage> redoList = new LinkedList<BufferedImage>();
 	
 	// setter and getter
-	public Image getImage() {
-		return image;
-	}
 
-	public void setImage(Image image) {
-		this.image = image;
-	}
 	
 	public int getImageWidth() {
 		return imageWidth;
@@ -77,7 +70,6 @@ public class ImageProcessor {
 	public ImageProcessor(String filePath){
 		 try {
 	            bufferedImage = ImageIO.read(new File(filePath));
-	            image = bufferedImage;
 	            undoList.add(bufferedImage);
 	     } catch (IOException e) {
 	            e.printStackTrace();
@@ -87,5 +79,10 @@ public class ImageProcessor {
 	// tranfer to greyscale image
 	public void imageGreyscale(){
 		
+		BufferedImage result = new BufferedImage(bufferedImage.getWidth(),bufferedImage.getHeight(),BufferedImage.TYPE_BYTE_GRAY);
+		Graphics g = result.getGraphics();
+		g.drawImage(bufferedImage, 0, 0, null);
+		g.dispose();
+		bufferedImage = result;
 	}
 }
