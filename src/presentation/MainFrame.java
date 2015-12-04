@@ -77,12 +77,13 @@ public class MainFrame extends JFrame {
 		
 		JMenuBar menuBar = new JMenuBar();
 		// string for menu
-		String[] menuArr = {"File","Image","BGRemove","Neuro","Help"};
+		String[] menuArr = {"File","View","Image","BGRemove","Neuro","Help"};
 		// string for menu item
 		String[][] menuItemArr = {
 				{"Open","Save","Save as","-","Exit"},
-				{"Undo","Redo","-","Greyscale","Resize","White noise","Extra line"},
-				{"Thresholding","Edge detecting"},
+				{"Zoom out","Zoom in"},
+				{"Undo","Redo","-","Grayscale","Resize","Gaussian noise","Extra line"},
+				{"Gray thresholding","Color thresholding"},
 				{"KNN setting","KNN training","KNN testing"},
 				{"Manual","About"}
 		};

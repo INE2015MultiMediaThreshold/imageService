@@ -18,7 +18,7 @@ public class StatePanel extends JPanel {
 		dim.height = 80;
 		setPreferredSize(dim);
 		setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		this.setBackground(Color.WHITE);
+		//this.setBackground(Color.WHITE);
 	}
 
 }

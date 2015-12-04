@@ -70,19 +70,72 @@ public class ImageProcessor {
 	public ImageProcessor(String filePath){
 		 try {
 	            bufferedImage = ImageIO.read(new File(filePath));
-	            undoList.add(bufferedImage);
+	           
 	     } catch (IOException e) {
 	            e.printStackTrace();
 	     }
 	}
 	
-	// tranfer to greyscale image
-	public void imageGreyscale(){
-		
-		BufferedImage result = new BufferedImage(bufferedImage.getWidth(),bufferedImage.getHeight(),BufferedImage.TYPE_BYTE_GRAY);
-		Graphics g = result.getGraphics();
-		g.drawImage(bufferedImage, 0, 0, null);
-		g.dispose();
-		bufferedImage = result;
+	
+	public static int colorToRGB(int alpha, int red, int green, int blue) {
+
+		int newPixel = 0;
+		newPixel += alpha;
+		newPixel = newPixel << 8;
+		newPixel += red;
+		newPixel = newPixel << 8;
+		newPixel += green;
+		newPixel = newPixel << 8;
+		newPixel += blue;
+
+		return newPixel;
+
 	}
+	
+	// tranfer to grayscale image
+	public BufferedImage colorToGrey(BufferedImage sourceImg){
+		
+		BufferedImage grayImage = 
+				new BufferedImage(sourceImg.getWidth(), 
+								  sourceImg.getHeight(), 
+								  sourceImg.getType());
+				
+			
+			for (int i = 0; i < sourceImg.getWidth(); i++) {
+				for (int j = 0; j < sourceImg.getHeight(); j++) {
+					final int color = sourceImg.getRGB(i, j);
+					final int r = (color >> 16) & 0xff;
+					final int g = (color >> 8) & 0xff;
+					final int b = color & 0xff;
+					int gray = (int) (0.3 * r + 0.59 * g + 0.11 * b);;
+					//System.out.println(i + " : " + j + " " + gray);
+					int newPixel = colorToRGB(255, gray, gray, gray);
+					grayImage.setRGB(i, j, newPixel);
+				}
+			}
+		return grayImage;
+		
+	}
+	
+	public BufferedImage backgroundRemove(BufferedImage sourceImg, int threhold){
+		BufferedImage grayImage = this.colorToGrey(sourceImg);
+		for (int i = 0; i < sourceImg.getWidth(); i++) {
+			for (int j = 0; j < sourceImg.getHeight(); j++) {
+				int gray = grayImage.getRGB(i, j);
+				int grayB = gray&0xff;
+				if(grayB>threhold){
+					int newPixel = colorToRGB(255,255,255,255);
+					sourceImg.setRGB(i, j, newPixel);
+				}
+				}
+		}
+		
+		return sourceImg;
+		
+	}
+	
+	
+	
+	
+	
 }
