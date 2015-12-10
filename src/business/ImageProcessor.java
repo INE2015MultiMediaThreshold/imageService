@@ -1,11 +1,10 @@
 package business;
 
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -95,10 +94,8 @@ public class ImageProcessor {
 	// tranfer to grayscale image
 	public BufferedImage colorToGrey(BufferedImage sourceImg){
 		
-		BufferedImage grayImage = 
-				new BufferedImage(sourceImg.getWidth(), 
-								  sourceImg.getHeight(), 
-								  sourceImg.getType());
+		BufferedImage grayImage = sourceImg;
+				
 				
 			
 			for (int i = 0; i < sourceImg.getWidth(); i++) {
@@ -115,6 +112,24 @@ public class ImageProcessor {
 			}
 		return grayImage;
 		
+	}
+	
+	public BufferedImage addExtraLine(BufferedImage sourceImg){
+		int imageW = sourceImg.getWidth();
+		int imageH = sourceImg.getHeight();
+		BufferedImage extraLineImg = sourceImg;
+				//new BufferedImage(imageW, imageH, sourceImg.getType());
+		Random random = new Random();
+		int extra = random.nextInt(imageW);
+		
+		
+			for (int j = 0; j < imageH; j++) {
+				
+				int newPixel = colorToRGB(255, 255, 255, 255);
+				extraLineImg.setRGB(extra, j, newPixel);
+			}
+		
+		return extraLineImg;
 	}
 	
 	public BufferedImage backgroundRemove(BufferedImage sourceImg, int threhold){

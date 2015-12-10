@@ -11,7 +11,7 @@ public class NoiseAdditionFilter extends AbstractBufferedImageOp {
     private int _mNoiseType = GAUSSION_NOISE_TYPE;  
       
     public NoiseAdditionFilter() {  
-        System.out.println("Adding Poisson/Gaussion Noise");  
+        //System.out.println("Adding Poisson/Gaussion Noise");  
     }  
       
     public void setNoise(double power) {  

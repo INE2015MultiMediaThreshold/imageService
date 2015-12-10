@@ -2,8 +2,10 @@ package presentation;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 import business.ImageProcessor;
@@ -15,7 +17,7 @@ public class MenuService {
 	
 	private static MenuService service = new MenuService();
 	
-	private JFileChooser fileChooser = new JFileChooser();
+	private JFileChooser fileChooser ;
 	
 	private File currentDirectory = null;
 	
@@ -30,7 +32,7 @@ public class MenuService {
 	}
 	
 	public void open(MainFrame frame){
-		
+		fileChooser = new JFileChooser();
 		int result = fileChooser.showOpenDialog(null);
 		if(result==JFileChooser.APPROVE_OPTION){
                String name = fileChooser.getSelectedFile().getPath();
@@ -40,14 +42,44 @@ public class MenuService {
 		}
 	}
 	
+	public void saveAs(MainFrame frame){
+		fileChooser = new JFileChooser();
+		int userSelection = fileChooser.showSaveDialog(null);
+		 
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+		    File fileToSave = fileChooser.getSelectedFile();
+		    //System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+		    try{
+		    ImageIO.write((BufferedImage)frame.getPanel().getImage(),"jpg", fileToSave);
+		    }catch(IOException e){
+		    	e.printStackTrace();
+		    }
+		    //System.out.println("Image saved!");
+		}
+		
+	}
+	
+	
 	public void toGreyscale(MainFrame frame){
 		ImagePanel pane = frame.getPanel();
 		ImageProcessor imgP = pane.getImageProcessor();
-		BufferedImage colorImg = imgP.getBufferedImage();
-		
-		pane.setImage(imgP.colorToGrey(colorImg));
+		//BufferedImage colorImg = ;
+		BufferedImage greyImg = imgP.colorToGrey(imgP.getBufferedImage());
+		imgP.setBufferedImage(greyImg);
+		pane.setImage(greyImg);
 		pane.repaint();
 		
+		
+	}
+	
+	public void extraLine(MainFrame frame){
+		ImagePanel pane = frame.getPanel();
+		ImageProcessor imgP = pane.getImageProcessor();
+		BufferedImage sourceImg = imgP.getBufferedImage();
+	    BufferedImage extraLineImg = imgP.addExtraLine(sourceImg);
+	    imgP.setBufferedImage(extraLineImg);
+		pane.setImage(extraLineImg);
+		pane.repaint();
 		
 	}
 	
@@ -55,7 +87,8 @@ public class MenuService {
 		ImagePanel pane = frame.getPanel();
 		ImageProcessor imgP = pane.getImageProcessor();
 		NoiseAdditionFilter nFilter = new NoiseAdditionFilter();
-		imgP.setBufferedImage(nFilter.filter(imgP.getBufferedImage(), null));
+		BufferedImage gaussianImg = nFilter.filter(imgP.getBufferedImage(),null);
+		imgP.setBufferedImage(gaussianImg);
 		pane.setImage(imgP.getBufferedImage());
 		pane.repaint();
 	}
@@ -86,6 +119,11 @@ public class MenuService {
 			open(frame);
 		}
 		
+		// save as
+		if(cmd.equals("Save as")){
+			saveAs(frame);
+		}
+		
 		// exit
 		if(cmd.equals("Exit")){
 			System.exit(0);
@@ -100,6 +138,10 @@ public class MenuService {
 		// add Gaussion noise
 		if(cmd.equals("Gaussian noise")){
 			addGaussianNoise(frame);
+		}
+		
+		if(cmd.equals("Extra line")){
+			extraLine(frame);
 		}
 		
 		// background remove by gray scale image thresholding
