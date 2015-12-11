@@ -33,12 +33,20 @@ public class MenuService {
 	
 	public void open(MainFrame frame){
 		fileChooser = new JFileChooser();
-		int result = fileChooser.showOpenDialog(null);
-		if(result==JFileChooser.APPROVE_OPTION){
-               String name = fileChooser.getSelectedFile().getPath();
-               //System.out.println(name);
-            frame.getPanel().setImage(name);
-            frame.getPanel().repaint();
+		
+		if(fileChooser.showOpenDialog(frame)==JFileChooser.APPROVE_OPTION){
+			this.currentFile = fileChooser.getSelectedFile();
+			String imageName = currentFile.getName();
+            String imagePath = fileChooser.getSelectedFile().getPath();
+            //System.out.println(imageName);
+            //frame.getPanel().setImage(name);
+            StatePanel stateP = frame.getStatePanel();
+            ImagePanel imgP = frame.getPanel();
+            imgP.setImage(imagePath);
+            stateP.setStateImg(imgP.getImageProcessor().getBufferedImage());
+            stateP.showInfo(imageName);
+            imgP.repaint();
+            stateP.repaint();
 		}
 	}
 	
