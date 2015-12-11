@@ -1,5 +1,6 @@
 package presentation;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,8 @@ public class MenuService {
 	private static MenuService service = new MenuService();
 	
 	private JFileChooser fileChooser ;
+	
+	private double range = 0.1;
 	
 	private File currentDirectory = null;
 	
@@ -64,6 +67,16 @@ public class MenuService {
 		    }
 		    //System.out.println("Image saved!");
 		}
+		
+	}
+	
+	public void zoom(MainFrame frame,boolean isEnlarge){
+		double enLargeRange = isEnlarge ? 1 + range : 1 - range;
+		ImagePanel imgP = frame.getPanel();
+		Image sourceImg = imgP.getImage();
+		Image scaleImg = sourceImg.getScaledInstance((int)(sourceImg.getWidth(frame)*enLargeRange), (int)(sourceImg.getHeight(frame)*enLargeRange),  Image.SCALE_SMOOTH);
+		imgP.resetImage(scaleImg);
+		imgP.repaint();
 		
 	}
 	
@@ -135,6 +148,15 @@ public class MenuService {
 		// exit
 		if(cmd.equals("Exit")){
 			System.exit(0);
+		}
+		
+		// zoom
+		if(cmd.equals("Zoom out")){
+			zoom(frame,false);
+		}
+		
+		if(cmd.equals("Zoom in")){
+			zoom(frame,true);
 		}
 		
 		// image greyscale
