@@ -1,6 +1,8 @@
 package business;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -131,6 +133,13 @@ public class ImageProcessor {
 		
 		return extraLineImg;
 	}
+	
+	public static BufferedImage deepCopy(BufferedImage bi) {
+		 ColorModel cm = bi.getColorModel();
+		 boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+		 WritableRaster raster = bi.copyData(null);
+		 return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+		}
 	
 	public BufferedImage backgroundRemove(BufferedImage sourceImg, int threhold){
 		BufferedImage grayImage = this.colorToGrey(sourceImg);

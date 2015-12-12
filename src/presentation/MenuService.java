@@ -1,5 +1,6 @@
 package presentation;
 
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -8,6 +9,9 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import business.ImageProcessor;
 import business.NoiseAdditionFilter;
@@ -80,6 +84,33 @@ public class MenuService {
 		
 	}
 	
+	public void showSlider(MainFrame frame,String cmd){
+		
+		 JSlider slider = new JSlider(JSlider.HORIZONTAL, 0, 255, 50);
+		 
+	     slider.setPaintTicks(true);
+	     slider.setPaintLabels(true);
+	     slider.setMinorTickSpacing(1);
+	     slider.setMajorTickSpacing(10);
+	     
+	     slider.addChangeListener(new ChangeListener(){
+
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				JSlider jslider = (JSlider)e.getSource();
+				//System.out.println(jslider.getValue());
+				int sValue = jslider.getValue();
+				grayThresholding(frame,sValue);
+			}
+	     });
+	     
+	     frame.add(slider,BorderLayout.NORTH);
+	     frame.setVisible(true);
+		
+	}
+	
+	
 	
 	public void toGreyscale(MainFrame frame){
 		ImagePanel pane = frame.getPanel();
@@ -114,11 +145,13 @@ public class MenuService {
 		pane.repaint();
 	}
 	
-	public void grayThresholding(MainFrame frame){
+	public void grayThresholding(MainFrame frame,int tValue){
 		ImagePanel pane = frame.getPanel();
 		ImageProcessor imgP = pane.getImageProcessor();
-		BufferedImage colorImg = imgP.getBufferedImage();
-		BufferedImage bgrImg = imgP.backgroundRemove(colorImg, 50);
+		BufferedImage orignalImg = imgP.getBufferedImage();
+		BufferedImage colorImg = ImageProcessor.deepCopy(orignalImg);
+		//frame.showSlider();
+		BufferedImage bgrImg = imgP.backgroundRemove(colorImg, tValue);
 		pane.setImage(bgrImg);
 		pane.repaint();
 		
@@ -176,7 +209,8 @@ public class MenuService {
 		
 		// background remove by gray scale image thresholding
 		if(cmd.equals("Gray thresholding")){
-			grayThresholding(frame);
+			//grayThresholding(frame);
+			showSlider(frame,cmd);
 		}
 		
 	}

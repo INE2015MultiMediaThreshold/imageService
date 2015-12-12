@@ -1,16 +1,16 @@
 package presentation;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class MainFrame extends JFrame {
 	
@@ -22,8 +22,7 @@ public class MainFrame extends JFrame {
 	//private JScrollPane imageSp;
 	private StatePanel statePanel;
 	
-	
-	
+
 	public ImagePanel getPanel() {
 		return panel;
 	}
@@ -107,6 +106,8 @@ public class MainFrame extends JFrame {
 		this.setJMenuBar(menuBar);
 		
 	}
+	
+	
 }
 
 	

@@ -3,11 +3,13 @@ package presentation;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import business.ImageProcessor;
 
@@ -48,6 +50,8 @@ public class ImagePanel extends JPanel {
 	public void setImageProcessor(ImageProcessor imageProcessor) {
 		this.imageProcessor = imageProcessor;
 	}
+	
+	
 
 	public void paintComponent(Graphics g) {
         super.paintComponent(g);
