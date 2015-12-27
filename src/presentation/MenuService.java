@@ -157,7 +157,23 @@ public class MenuService {
 		
 	}
 	
-	
+	public void bestThresholding(MainFrame frame){
+		ImagePanel pane = frame.getPanel();
+		ImageProcessor imgP = pane.getImageProcessor();
+		BufferedImage orignalImg = imgP.getBufferedImage();
+		int w = orignalImg.getWidth();
+		int h = orignalImg.getHeight();
+		BufferedImage colorImg = ImageProcessor.deepCopy(orignalImg);
+		BufferedImage greyImg = imgP.colorToGrey(colorImg);
+		int[] greyPixl = new int[w*h];
+		greyPixl = imgP.imageToArray(greyImg);
+		int bestThre = imgP.bestThresh(greyPixl, w, h);
+		
+		BufferedImage bgrImg = imgP.backgroundRemove(orignalImg, bestThre);
+		pane.setImage(bgrImg);
+		pane.repaint();
+		
+	}
 	
 	
 	public static MenuService getInstance(){
@@ -208,9 +224,14 @@ public class MenuService {
 		}
 		
 		// background remove by gray scale image thresholding
-		if(cmd.equals("Gray thresholding")){
+		if(cmd.equals("Manual thresholding")){
 			//grayThresholding(frame);
 			showSlider(frame,cmd);
+		}
+		
+		// best thresholding
+		if(cmd.equals("Best thresholding")){
+			bestThresholding(frame);
 		}
 		
 	}
