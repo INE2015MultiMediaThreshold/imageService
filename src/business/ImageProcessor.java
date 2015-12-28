@@ -176,10 +176,8 @@ public class ImageProcessor {
 	    int i, j, 
 	        thresh,   
 	        newthresh,  
-	        gmax, gmin;         //最大,最小灰度值  
-	       //double a1, a2, max, pt;  
+	        gmax, gmin;        
 	       double[] p = new double[256];  
-	       //long[] num = new long[256];  
 	  
 	    int[][] im = new int[w][h];  
 	      
@@ -190,7 +188,6 @@ public class ImageProcessor {
 	       for (i = 0; i < 256; i++)  
 	           p[i] = 0;  
 	         
-	       //1.统计各灰度级出现的次数、灰度最大和最小值  
 	       gmax = 0;  
 	       gmin =255;  
 	       for (j = 0; j < h; j++)  
@@ -214,7 +211,6 @@ public class ImageProcessor {
 	        thresh = newthresh;  
 	        p1 = 0; p2 = 0; s1 = 0; s2 = 0;  
 	          
-	        //2. 求两个区域的灰度平均值  
 	        for(j = gmin; j < thresh;j++)  
 	        {  
 	            p1 += p[j]*j;  
@@ -228,10 +224,65 @@ public class ImageProcessor {
 	            s2 += p[j];               
 	        }  
 	        meangray2 = (int)(p2/s2);  
-	        //3. 计算新阈值  
 	        newthresh = (meangray1+meangray2)/2;      
 	       }  
 	       return newthresh;  
+	} 
+	
+	
+	public int otsuThresh(int[] pix, int iw, int ih)  
+	{  
+	    //ColorModel cm = ColorModel.getRGBdefault();  
+	       int wh = iw * ih;  
+	       int[][] inIm = new int[iw][ih];   
+	  
+	       int i, j, t;  
+	       int L = 256;  
+	       double[] p = new double[L];  
+	                         
+	       for (j = 0; j < ih; j++)  
+	           for (i = 0; i < iw; i++)  
+	               inIm[i][j] = pix[i+j*iw]&0xff;                 
+	  
+	       for (i = 0; i < L; i++)  
+	           p[i] = 0;  
+	  
+	       for (j = 0; j < ih; j++)  
+	           for (i = 0; i < iw; i++)  
+	               p[inIm[i][j]]++;  
+	  
+	       for (int m = 0; m < L; m++)  
+	           p[m] = p[m] / wh;  
+	  
+	       double[] sigma = new double[L];  
+	       for (t = 0; t < L; t++)  
+	       {  
+	           double w0 = 0;  
+	           for (int m = 0; m < t+1; m++)  
+	               w0 += p[m];  
+	           double w1 = 1 - w0;  
+	  
+	           double u0 = 0;  
+	           for (int m = 0; m < t + 1; m++)  
+	               u0 += m * p[m] / w0;  
+	  
+	           double u1 = 0;  
+	           for (int m = t; m < L; m++)  
+	               u1 += m * p[m] / w1;  
+	  
+	           sigma[t] = w0*w1*(u0-u1)*(u0-u1);  
+	       }  
+	       double max = 0.0;  
+	       int T = 0;  
+	       for (i = 0; i < L-1; i++)  
+	       {  
+	           if (max < sigma[i])  
+	           {  
+	               max = sigma[i];  
+	               T = i;  
+	           }  
+	       }          
+	       return T;                  
 	}  
 	
 	

@@ -82,7 +82,7 @@ public class MainFrame extends JFrame {
 				{"Open","Save","Save as","-","Exit"},
 				{"Zoom out","Zoom in"},
 				{"Undo","Redo","-","Grayscale","Resize","Gaussian noise","Extra line"},
-				{"Manual thresholding","Best thresholding","Color thresholding"},
+				{"Manual thresholding","Best thresholding","Otsu thresholding"},
 				{"Manual","About"}
 		};
 		// create menu

@@ -168,8 +168,26 @@ public class MenuService {
 		int[] greyPixl = new int[w*h];
 		greyPixl = imgP.imageToArray(greyImg);
 		int bestThre = imgP.bestThresh(greyPixl, w, h);
-		
+		System.out.println(bestThre);
 		BufferedImage bgrImg = imgP.backgroundRemove(orignalImg, bestThre);
+		pane.setImage(bgrImg);
+		pane.repaint();
+		
+	}
+	
+	public void otsuThresholding(MainFrame frame){
+		ImagePanel pane = frame.getPanel();
+		ImageProcessor imgP = pane.getImageProcessor();
+		BufferedImage orignalImg = imgP.getBufferedImage();
+		int w = orignalImg.getWidth();
+		int h = orignalImg.getHeight();
+		BufferedImage colorImg = ImageProcessor.deepCopy(orignalImg);
+		BufferedImage greyImg = imgP.colorToGrey(colorImg);
+		int[] greyPixl = new int[w*h];
+		greyPixl = imgP.imageToArray(greyImg);
+		int otsuThre = imgP.otsuThresh(greyPixl, w, h);
+		System.out.println(otsuThre);
+		BufferedImage bgrImg = imgP.backgroundRemove(orignalImg, otsuThre);
 		pane.setImage(bgrImg);
 		pane.repaint();
 		
@@ -232,6 +250,11 @@ public class MenuService {
 		// best thresholding
 		if(cmd.equals("Best thresholding")){
 			bestThresholding(frame);
+		}
+		
+		// Otsu thresholding
+		if(cmd.equals("Otsu thresholding")){
+			otsuThresholding(frame);
 		}
 		
 	}
